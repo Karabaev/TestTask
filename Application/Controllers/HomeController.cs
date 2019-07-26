@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using Application.Models;
-    using Data.Context;
+    using Data;
 
     public class HomeController : Controller
     {

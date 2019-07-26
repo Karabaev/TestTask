@@ -10,7 +10,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Data.Context;
+    using Data;
     using Microsoft.EntityFrameworkCore;
 
     public class Startup

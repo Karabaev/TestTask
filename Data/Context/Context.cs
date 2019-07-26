@@ -1,4 +1,4 @@
-﻿namespace Data.Context
+﻿namespace Data
 {
     using Entities;
     using Microsoft.EntityFrameworkCore;
