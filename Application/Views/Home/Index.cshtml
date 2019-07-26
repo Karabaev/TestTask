@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Application.Models.IndexPersonViewModel>
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+
+    @foreach(var item in Model)
+    {
+        <p>
+            <div><bold>@item.FullName</bold></div>
+            <div>Дата рождения: @item.DateOfBirth.ToString("dd.MM.yyyy")</div>
+            <div>Организация: @item.Organization.Name</div>
+            <div>Должность: @item.Position.Name</div>
+            <div>
+                Контактная информация: <br/>
+                <ul>
+                    @foreach (var contactInfo in item.Contacts)
+                    {
+                        <li>
+                             @string.Format("{0}, {1}", contactInfo.Type, contactInfo.Value)
+                        </li>
+                    }
+                </ul>
+            </div>
+            
+            
+        </p>
+    }
+
+</div>
