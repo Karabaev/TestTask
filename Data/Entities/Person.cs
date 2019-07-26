@@ -13,7 +13,7 @@
         public Guid OrganizationId { get; set; }
         public virtual Organization Organization { get; set; }
         public Guid PositionId { get; set; }
-        public virtual Organization Position { get; set; }
+        public virtual Position Position { get; set; }
         public virtual ICollection<ContactInfo> Contacts { get; set; }
     }
 }
