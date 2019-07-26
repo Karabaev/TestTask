@@ -10,7 +10,8 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Data.Repository;
+    using Data.Context;
+    using Microsoft.EntityFrameworkCore;
 
     public class Startup
     {
@@ -31,10 +32,8 @@
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddScoped<IContactInfoRepository, ContactInfoRepository>();
-            services.AddScoped<IOrganizationRepository, OrganizationRepository>();
-            services.AddScoped<IPersonRepository, PersonRepository>();
-            services.AddScoped<IPositionRepository, PositionRepository>();
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<Context>(options => options.UseSqlServer(connection));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

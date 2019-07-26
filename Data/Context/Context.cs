@@ -3,12 +3,17 @@
     using Entities;
     using Microsoft.EntityFrameworkCore;
 
-    internal class Context : DbContext
+    public class Context : DbContext
     {
-        internal DbSet<ContactInfo> ContactInfos { get; set; }
-        internal DbSet<Organization> Organizations { get; set; }
-        internal DbSet<Person> People { get; set; }
-        internal DbSet<Position> Positions { get; set; }
+        public Context(DbContextOptions<Context> options) : base(options)
+        {
+            Database.EnsureCreated();
+        }
+
+        public DbSet<ContactInfo> ContactInfos { get; set; }
+        public DbSet<Organization> Organizations { get; set; }
+        public DbSet<Person> People { get; set; }
+        public DbSet<Position> Positions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
