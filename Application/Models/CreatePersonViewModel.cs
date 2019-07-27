@@ -30,7 +30,7 @@
 
             foreach (var item in this.Contacts)
             {
-                result.Contacts.Add(item.GetDomain())
+                result.Contacts.Add(item.GetDomain());
             }
 
             return result;

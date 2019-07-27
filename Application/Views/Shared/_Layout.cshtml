@@ -26,15 +26,25 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+                <div>
+                    <a href="#" id="create-new-person">Добавить новый контакт</a>
+                    <form method="post">
+                        Имя: <input name="FirstName" id="first-name" type="text">
+                        Фамилия:<input name="LastName" id="last-name" type="text">
+                        Отчество: <input name="MiddleName" id="middle-name" type="text">
+                        Дата рождения: <input name="DateOfBirth" id="date-of-birth" type="date">
+                        Название организации: <input name="OrganizationName" id="org-name" type="text">
+                        Должность: <input name="PositionName" id="pos-name" type="tel">
+                        Добавить контактные данные <select id="contact-types">
+                            <option>Telephone</option>
+                            <option>Skype</option>
+                            <option>Email</option>
+                            <option>Other</option>
+                        </select>
+                        <ul id="contacts">
+                            <li><span class="contact-type">Skype</span>:<span class="contact-value"></span></li>
+                        </ul>
+                    </form>
                 </div>
             </div>
         </nav>

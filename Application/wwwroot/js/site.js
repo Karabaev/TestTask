@@ -1,4 +1,12 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$(document).ready(function () {
+    $('#contacts').empty();
 
-// Write your JavaScript code.
+});
+
+$('#contact-types').on('change', function () {
+    $('#contacts').append(GetContactHtml(this.value));
+});
+
+function GetContactHtml(type) {
+    return '<li><span class="contact-type">' + type + '</span>:<input type="text" class="contact-value"></input></li>';
+}
