@@ -2,30 +2,14 @@
     $('#contacts').empty();
 });
 
+// добавить новую строку контактных данных
 $('#contact-types').on('change', function () {
-    $('#contacts').append(GetContactHtml(this.value));
+    $('#contacts').append(getContactHtml(this.value));
 });
 
+// отправить пост запрос на создание записи
 $('#submit-btn-new-person-form').on('click', function () {
-    json = JSON.stringify(GetJsonNewContactToSubmit());
-    //json = JSON.stringify({
-    //    FirstName: 'Test',
-    //    LastName: 'Test',
-    //    MiddleName: 'Test'
-    //});
-    //$.ajax({
-    //    url: '/Test',
-    //    type: 'post',
-    //    contentType: 'application/json',
-    //    dataType: 'json',
-    //    data: json,
-    //    success: function (result) {
-    //        log(result);
-    //    },
-    //    error: function (jqxhr, status, errorMsg) {
-    //        log(errorMsg);
-    //    }
-    //});
+    json = JSON.stringify(GetNewPersonInfoToSubmit());
     $.ajax({
         url: '/Create',
         type: 'post',
@@ -43,17 +27,19 @@ $('#submit-btn-new-person-form').on('click', function () {
     });
 });
 
-
-function GetContactHtml(type) {
+// получить верстку для элемента листа контактных данных
+function getContactHtml(type) {
     return '<li><span class="contact-type">' + type + '</span>:<input type="text" class="contact-value"></input></li>';
 }
 
-function GetJsonNewContactToSubmit() {
-    var result = serializeForm(); //$('#new-person-form').serialize();
+// собрать всю инфу для запроса создания новой записи
+function GetNewPersonInfoToSubmit() {
+    var result = serializeForm();
     result.Contacts = serializeContacts();
     return result;
 }
 
+// создать объект из данных формы создания
 function serializeForm() {
     var unindexed_array = $('#new-person-form').serializeArray();
     var indexed_array = {};
@@ -65,6 +51,7 @@ function serializeForm() {
     return indexed_array;
 }
 
+// создать массив контактные данные 
 function serializeContacts() {
     result = [];
     listItems = $('#contacts li').get();
