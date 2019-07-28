@@ -1,14 +1,47 @@
 ﻿$(document).ready(function () {
     $('#contacts').empty();
+    $(window).resize(setPopupContainerPosition);
+    $(window).scroll(setPopupContainerPosition);
+    setPopupContainerPosition();    
 });
 
+$('#open-new-person-block-link').on('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    scrollPos = $(window).scrollTop();
+    $('#new-person-block').show();
+    $('#black-background').show();
+    $('html,body').css('overflow', 'hidden');
+    $('html').scrollTop(scrollPos);
+});
+
+$('#black-background').click(function () {
+    closePopup();
+});
+
+$('#close-popup-btn').click(function () {
+    closePopup();
+});
+
+function closePopup() {
+    scrollPos = $(window).scrollTop();
+    $('#new-person-block').hide();
+    $('#black-background').hide();
+    $("html,body").css("overflow", "auto");
+    $('html').scrollTop(scrollPos);
+}
+
 // добавить новую строку контактных данных
-$('#contact-types').on('change', function () {
+$('#contact-types').on('change', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
     $('#contacts').append(getContactHtml(this.value));
 });
 
 // отправить пост запрос на создание записи
-$('#submit-btn-new-person-form').on('click', function () {
+$('#submit-btn-new-person-form').on('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
     json = JSON.stringify(GetNewPersonInfoToSubmit());
     $.ajax({
         url: '/Create',
@@ -68,4 +101,15 @@ function serializeContacts() {
         result.push(struct);
     });
     return result;
+}
+
+function setPopupContainerPosition() {
+    containerWidth = 400;
+    winWidth = $(window).width();
+    winHeight = $(document).height();
+    scrollPos = $(window).scrollTop();
+    disWidth = (winWidth - containerWidth) / 2;
+    disHeight = scrollPos + 150;
+    $('.popup-container').css({ 'width': containerWidth + 'px', 'left': disWidth + 'px', 'top': disHeight + 'px' });
+    $('#black-background').css({ 'width': winWidth + 'px', 'height': winHeight + 'px' });
 }
