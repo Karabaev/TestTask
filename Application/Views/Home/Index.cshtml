@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<Application.Models.IndexPersonViewModel>
-
+@{ 
+    Layout = "_Layout";
+}
 <div>
-    <h1>Контакты</h1>
+    <h2>Контакты</h2>
 
     @foreach(var item in Model)
     {
