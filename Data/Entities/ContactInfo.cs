@@ -7,7 +7,8 @@
         Telephone,
         Skype,
         Email,
-        Other
+        Other,
+        Undefined
     }
 
     public class ContactInfo : IEntity

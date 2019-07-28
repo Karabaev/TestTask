@@ -6,6 +6,9 @@
     {
         public OrganizationViewModel(Organization organization)
         {
+            if (organization == null)
+                throw new System.ArgumentNullException(nameof(organization));
+
             this.Name = organization.Name;
         }
 

@@ -8,12 +8,18 @@
         public Context(DbContextOptions<Context> options) : base(options)
         {
             Database.EnsureCreated();
+
         }
 
         public DbSet<ContactInfo> ContactInfos { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Position> Positions { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

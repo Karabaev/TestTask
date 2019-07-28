@@ -11,21 +11,20 @@
         [Required]
         public string Value { get; set; }
 
-        public ContactInfo GetDomain(/*Guid personId*/)
+        public ContactInfo GetDomain()
         {
             ContactInfo result = new ContactInfo();
             result.Value = this.Value;
-            //result.PersonId = personId;
 
-            if (!Enum.TryParse<ContactInfoTypes>(this.Type, out ContactInfoTypes type))
+            try
             {
-                result.Type = type;
+                result.Type = (ContactInfoTypes)Enum.Parse(typeof(ContactInfoTypes), this.Type);
             }
-            else
+            catch(FormatException)
             {
-                result.Type = ContactInfoTypes.Other;
+                result.Type = ContactInfoTypes.Undefined;
             }
-
+           
             return result;
         }
     }

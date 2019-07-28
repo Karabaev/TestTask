@@ -32,8 +32,8 @@
             return View(models);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreatePersonAsync(CreatePersonViewModel model)
+        [HttpPost("/Create")]
+        public async Task<IActionResult> CreatePersonAsync([FromBody]CreatePersonViewModel model)
         {
             if (!ModelState.IsValid)
                 return StatusCode(404);

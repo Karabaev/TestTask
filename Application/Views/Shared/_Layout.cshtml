@@ -19,35 +19,33 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Application</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div>
-                    <a href="#" id="create-new-person">Добавить новый контакт</a>
-                    <form method="post">
-                        Имя: <input name="FirstName" id="first-name" type="text">
-                        Фамилия:<input name="LastName" id="last-name" type="text">
-                        Отчество: <input name="MiddleName" id="middle-name" type="text">
-                        Дата рождения: <input name="DateOfBirth" id="date-of-birth" type="date">
-                        Название организации: <input name="OrganizationName" id="org-name" type="text">
-                        Должность: <input name="PositionName" id="pos-name" type="tel">
-                        Добавить контактные данные <select id="contact-types">
-                            <option>Telephone</option>
-                            <option>Skype</option>
-                            <option>Email</option>
-                            <option>Other</option>
-                        </select>
-                        <ul id="contacts">
-                            <li><span class="contact-type">Skype</span>:<span class="contact-value"></span></li>
-                        </ul>
-                    </form>
-                </div>
+        <div>
+            <a href="#" id="create-new-person">Добавить новый контакт</a>
+            <form method="post" id="new-person-form" action="Home/CreatePersonAsync">
+                <div>Имя: <input name="FirstName" id="first-name" type="text"></div>
+                <div>Фамилия:<input name="LastName" id="last-name" type="text"></div>
+                <div>Отчество: <input name="MiddleName" id="middle-name" type="text"></div>
+                <div>Дата рождения: <input name="DateOfBirth" id="date-of-birth" type="date"></div>
+                <div>Название организации: <input name="OrganizationName" id="org-name" type="text"></div>
+                <div>Должность: <input name="PositionName" id="pos-name" type="tel"></div>
+                <input type="submit" />
+            </form>
+            <div>
+                Добавить контактные данные
+                <select id="contact-types">
+                    <option>Telephone</option>
+                    <option>Skype</option>
+                    <option>Email</option>
+                    <option>Other</option>
+                </select>
             </div>
-        </nav>
+            <div>
+                <ul id="contacts"></ul>
+            </div>
+            <button id="submit-btn-new-person-form">
+                Создат контакт
+            </button>
+        </div>
     </header>
     <div class="container">
         <partial name="_CookieConsentPartial" />
