@@ -16,13 +16,16 @@ $('#submit-btn-new-person-form').on('click', function () {
         contentType: 'application/json',
         dataType: 'json',
         data: json,
-        error: function (jqxhr, status, errorMsg) {
-            alert(errorMsg);
-        },
-        statusCode: {
-            200: function () {
-                alert("Успех");
+        success: function (result){
+            if (result.redirectUrl) {
+                window.location.href = result.redirectUrl;
             }
+            else if (result.error) {
+                alert(error);
+            }
+        },
+        error: function (jqxhr, status, errorMsg) {
+            console.error(status + " | " + errorMsg + " | " + jqxhr);
         }
     });
 });

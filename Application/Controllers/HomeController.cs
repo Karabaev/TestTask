@@ -36,7 +36,7 @@
         public async Task<IActionResult> CreatePersonAsync([FromBody]CreatePersonViewModel model)
         {
             if (!ModelState.IsValid)
-                return StatusCode(404);
+                return Json(new { error = "На форме есть некорретные данные" });
 
             Organization organization = this.dataManager.FindOrganizationByName(model.OrganizationName);
 
@@ -59,11 +59,13 @@
 
             if (result)
             {
-                return RedirectToAction("Index");
+                return Ok(new { redirectUrl = Url.Action("Index") });
+                //return Json(new { redirectUrl = Url.Action("Index") });
+                //return RedirectToAction("Index");
             }
             else
             {
-                return StatusCode(500);
+                 return Json(new { error = "Внутренняя ошибка сервера. Не удалось сохранить запись." }); ;
             }
         }
 
