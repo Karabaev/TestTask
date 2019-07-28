@@ -23,14 +23,6 @@ $('#close-popup-btn').click(function () {
     closePopup();
 });
 
-function closePopup() {
-    scrollPos = $(window).scrollTop();
-    $('#new-person-block').hide();
-    $('#black-background').hide();
-    $("html,body").css("overflow", "auto");
-    $('html').scrollTop(scrollPos);
-}
-
 // добавить новую строку контактных данных
 $('#contact-types').on('change', function (e) {
     e.preventDefault();
@@ -103,6 +95,7 @@ function serializeContacts() {
     return result;
 }
 
+// поместить попап в центре
 function setPopupContainerPosition() {
     containerWidth = 400;
     winWidth = $(window).width();
@@ -112,4 +105,13 @@ function setPopupContainerPosition() {
     disHeight = scrollPos + 150;
     $('.popup-container').css({ 'width': containerWidth + 'px', 'left': disWidth + 'px', 'top': disHeight + 'px' });
     $('#black-background').css({ 'width': winWidth + 'px', 'height': winHeight + 'px' });
+}
+
+// закрыть попап
+function closePopup() {
+    scrollPos = $(window).scrollTop();
+    $('#new-person-block').hide();
+    $('#black-background').hide();
+    $("html,body").css("overflow", "auto");
+    $('html').scrollTop(scrollPos);
 }
