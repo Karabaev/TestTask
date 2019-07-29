@@ -11,6 +11,14 @@
         [Required]
         public string Value { get; set; }
 
+        public CreateContactInfoViewModel() { }
+
+        public CreateContactInfoViewModel(ContactInfo info)
+        {
+            this.Value = info.Value;
+            this.Type = info.Type.ToString();
+        }
+
         public ContactInfo GetDomain()
         {
             ContactInfo result = new ContactInfo();

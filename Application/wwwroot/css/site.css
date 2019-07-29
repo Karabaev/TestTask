@@ -54,7 +54,7 @@
 }
 
 #main-header {
-    position: fixed;
+    /*position: fixed;*/
     width: 100%;
     padding: 10px; 
     background: #ffe; 
@@ -62,8 +62,9 @@
 }
 
 .person-card-list {
-    padding-top: 120px;
-    padding-left: 10px;
+    /*padding-top: 120px;*/
+    padding-left: 5%;
+    padding-right: 5%;
 }
 
 .person-card {

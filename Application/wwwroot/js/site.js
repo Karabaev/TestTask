@@ -8,11 +8,7 @@
 $('#open-new-person-block-link').on('click', function (e) {
     e.preventDefault();
     e.stopPropagation();
-    scrollPos = $(window).scrollTop();
-    $('#new-person-block').show();
-    $('#black-background').show();
-    $('html,body').css('overflow', 'hidden');
-    $('html').scrollTop(scrollPos);
+    showPopup();
 });
 
 $('#black-background').click(function () {
@@ -23,11 +19,82 @@ $('#close-popup-btn').click(function () {
     closePopup();
 });
 
+$('.open-edit-person-form-link').click(function () {
+    object = {
+        Id: $(this).attr('value')
+    };
+    $.ajax({
+        url: '/get-person',
+        type: 'get',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: object,
+        success: function (result) {
+            if (result.obj) {
+                popupWnd = $('new-person-block');
+                popupWnd.find('#first-name').val(result.FirstName);
+                popupWnd.find('#last-name').val(result.LastName);
+                popupWnd.find('#middle-name').val(result.MiddleName);
+                popupWnd.find('#date-of-birth').val(result.DateOfBirth);
+                popupWnd.find('#org-name').val(result.OrganizationName);
+                popupWnd.find('#pos-name').val(result.PositionName);
+
+                for (i in result.Contacts) {
+                    popupWnd.find('#contacts').append(getContactHtml(result.Contacts[i].Type, result.Contacts[i].Value));
+                }
+
+                showPopup();
+            }
+            else if (result.error) {
+                alert(result.error);
+            }
+        },
+        error: function (jqxhr, status, errorMsg) {
+            console.error(status + " | " + errorMsg + " | " + jqxhr);
+        }
+    });
+});
+
+//function openEditForm(personGuid) {
+//    json = JSON.stringify({
+//        Id: personGuid
+//    });
+//    $.ajax({
+//        url: '/get-person',
+//        type: 'patch',
+//        contentType: 'application/json',
+//        dataType: 'json',
+//        data: json,
+//        success: function (result) {
+//            if (result) {
+//                popupWnd.find('#first-name').val(result.FirstName);
+//                popupWnd.find('#last-name').val(result.LastName);
+//                popupWnd.find('#middle-name').val(result.MiddleName);
+//                popupWnd.find('#date-of-birth').val(result.DateOfBirth);
+//                popupWnd.find('#org-name').val(result.OrganizationName);
+//                popupWnd.find('#pos-name').val(result.PositionName);
+                
+//                for (i in result.Contacts) {
+//                    popupWnd.find('#contacts').append(getContactHtml(result.Contacts[i].Type, result.Contacts[i].Value));
+//                }
+
+//            }
+//            else if (result.error) {
+//                alert(result.error);
+//            }
+//        },
+//        error: function (jqxhr, status, errorMsg) {
+//            console.error(status + " | " + errorMsg + " | " + jqxhr);
+//        }
+//    });
+//    showPopup();
+//}
+
 // добавить новую строку контактных данных
 $('#contact-types').on('change', function (e) {
     e.preventDefault();
     e.stopPropagation();
-    $('#contacts').append(getContactHtml(this.value));
+    $('#contacts').append(getContactHtml(this.value, ''));
 });
 
 // отправить пост запрос на создание записи
@@ -84,9 +151,9 @@ $('.remove-person-link').on('click', function (e) {
 });
 
 // получить верстку для элемента листа контактных данных
-function getContactHtml(type) {
+function getContactHtml(type, value) {
     return '<li><span class="contact-type">' + type
-        + '</span>:<input type="text" class="contact-value"></input><button onclick="removeContactInfoRow(this)">X</button></li>';
+        + '</span>:<input type="text" class="contact-value" value="'+ value +'"></input><button onclick="removeContactInfoRow(this)">X</button></li>';
 }
 
 // удалить строку контактных данных из DOM
@@ -174,5 +241,13 @@ function closePopup() {
     $('#new-person-block').hide();
     $('#black-background').hide();
     $("html,body").css("overflow", "auto");
+    $('html').scrollTop(scrollPos);
+}
+
+function showPopup() {
+    scrollPos = $(window).scrollTop();
+    $('#new-person-block').show();
+    $('#black-background').show();
+    $('html,body').css('overflow', 'hidden');
     $('html').scrollTop(scrollPos);
 }

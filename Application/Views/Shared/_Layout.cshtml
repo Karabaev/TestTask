@@ -14,37 +14,7 @@
         <div class="row">
             <div class="col-md-3">
                 <a href="#" id="open-new-person-block-link">Добавить новый контакт</a>
-                <div id="new-person-block" class="popup-container">
-                    <div id="close-popup-btn" class="close">X</div>
-                    <div class="top">
-                        <h3>Новый контакт</h3>
-                    </div>
-                    <div class="bottom">
-                        <form method="post" id="new-person-form" action="Home/CreatePersonAsync">
-                            <div>Имя: <input name="FirstName" id="first-name" type="text"></div>
-                            <div>Фамилия:<input name="LastName" id="last-name" type="text"></div>
-                            <div>Отчество: <input name="MiddleName" id="middle-name" type="text"></div>
-                            <div>Дата рождения: <input name="DateOfBirth" id="date-of-birth" type="date"></div>
-                            <div>Название организации: <input name="OrganizationName" id="org-name" type="text"></div>
-                            <div>Должность: <input name="PositionName" id="pos-name" type="tel"></div>
-                        </form>
-                        <div>
-                            Добавить контактные данные
-                            <select id="contact-types">
-                                <option>Telephone</option>
-                                <option>Skype</option>
-                                <option>Email</option>
-                                <option>Other</option>
-                            </select>
-                        </div>
-                        <div>
-                            <ul id="contacts"></ul>
-                        </div>
-                        <button id="submit-btn-new-person-form">
-                            Создать контакт
-                        </button>
-                    </div>
-                </div>
+
             </div>
             <div class="col-md-8">
                 Искать по
@@ -55,6 +25,37 @@
                     <input type="radio" name="SearchType" value="ContactInfo"> контактным данным
                     <input type="search" name="SearchString" placeholder="Значение" />
                 </form>
+            </div>
+        </div>
+        <div id="new-person-block" class="popup-container">
+            <div id="close-popup-btn" class="close">X</div>
+            <div class="top">
+                <h3>Новый контакт</h3>
+            </div>
+            <div class="bottom">
+                <form method="post" id="new-person-form" action="Home/CreatePersonAsync">
+                    <div>Имя: <input name="FirstName" id="first-name" type="text"></div>
+                    <div>Фамилия:<input name="LastName" id="last-name" type="text"></div>
+                    <div>Отчество: <input name="MiddleName" id="middle-name" type="text"></div>
+                    <div>Дата рождения: <input name="DateOfBirth" id="date-of-birth" type="date"></div>
+                    <div>Название организации: <input name="OrganizationName" id="org-name" type="text"></div>
+                    <div>Должность: <input name="PositionName" id="pos-name" type="tel"></div>
+                </form>
+                <div>
+                    Добавить контактные данные
+                    <select id="contact-types">
+                        <option>Telephone</option>
+                        <option>Skype</option>
+                        <option>Email</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div>
+                    <ul id="contacts"></ul>
+                </div>
+                <button id="submit-btn-new-person-form">
+                    Создать контакт
+                </button>
             </div>
         </div>
         <div id="black-background"></div>

@@ -9,15 +9,41 @@
     {
         [Required]
         public Guid Id { get; set; }
+        [Required]
         public string FirstName { get; set; }
+        [Required]
         public string LastName { get; set; }
+        [Required]
         public string MiddleName { get; set; }
+        [Required]
         public DateTime DateOfBirth { get; set; }
-        public Guid OrganizationId { get; set; }
-        public Guid PositionId { get; set; }
+        [Required]
+        public string OrganizationName { get; set; }
+        [Required]
+        public string PositionName { get; set; }
+        [Required]
         public virtual ICollection<CreateContactInfoViewModel> Contacts { get; set; }
 
-        public Person GetDomain()
+        public UpdatePersonViewModel() { }
+
+        public UpdatePersonViewModel(Person person)
+        {
+            this.Id = person.Id;
+            this.FirstName = person.FirstName;
+            this.LastName = person.LastName;
+            this.MiddleName = person.MiddleName;
+            this.DateOfBirth = person.DateOfBirth;
+            this.OrganizationName = person.Organization.Name;
+            this.PositionName = person.Position.Name;
+            this.Contacts = new List<CreateContactInfoViewModel>();
+
+            foreach (var item in person.Contacts)
+            {
+                this.Contacts.Add(new CreateContactInfoViewModel(item));
+            }
+        }
+
+        public Person GetDomain(Guid orgId, Guid posId)
         {
             Person result = new Person
             {
@@ -26,8 +52,8 @@
                 LastName = this.LastName,
                 MiddleName = this.MiddleName,
                 DateOfBirth = this.DateOfBirth,
-                OrganizationId = OrganizationId,
-                PositionId = PositionId,
+                OrganizationId = orgId,
+                PositionId = posId,
                 Contacts = new List<ContactInfo>()
             };
 

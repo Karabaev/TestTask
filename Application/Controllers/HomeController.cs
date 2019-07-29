@@ -43,11 +43,38 @@ namespace Application.Controllers
             return View(models);
         }
 
+        [HttpGet("/get-person")]
+        public IActionResult GetPerson(GetPersonViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { error = "Не указан идентификатор записи" });
+
+            Person person = this.dataManager.GetPerson(model.Id);
+
+            if (person == null)
+                return Json(new { error = "Контакт не найден" });
+
+            UpdatePersonViewModel viewModel = new UpdatePersonViewModel(person);
+            return Json(new { obj = viewModel });
+        }
+
+        //[HttpGet("/get-person")]
+        //public IActionResult GetPerson(string Id)
+        //{
+        //    Person person = this.dataManager.GetPerson(Guid.Parse(Id));
+
+        //    if (person == null)
+        //        return Json(new { error = "Контакт не найден" });
+
+        //    UpdatePersonViewModel viewModel = new UpdatePersonViewModel(person);
+        //    return Json(new { obj = viewModel });
+        //}
+
         [HttpPost("/create")]
         public async Task<IActionResult> CreatePersonAsync([FromBody]CreatePersonViewModel model)
         {
             if (!ModelState.IsValid)
-                return Json(new { error = "На форме есть некорретные данные" });
+                return Json(new { error = "На форме есть некорректные данные" });
 
             Organization organization = this.dataManager.FindOrganizationByName(model.OrganizationName);
 
@@ -107,23 +134,34 @@ namespace Application.Controllers
             else
                 return Json(new { error = "Не удалось удалить запись" });
         }
-
+        [HttpPatch("/update-person")]
         public async Task<IActionResult> UpdatePersonAsync(UpdatePersonViewModel model)
         {
             if (!ModelState.IsValid)
-                return StatusCode(404);
+                return Json(new { error = "На форме есть некорректные данные" });
 
-            Person person = model.GetDomain();
-            bool result = await this.dataManager.UpdatePersonAsync(person);
+            Organization organization = this.dataManager.FindOrganizationByName(model.OrganizationName);
+
+            if (organization == null)
+            {
+                organization = new Organization { Name = model.OrganizationName };
+                await this.dataManager.AddOrganizationAsync(organization);
+            }
+
+            Position position = this.dataManager.FindPositionByName(model.PositionName);
+
+            if (position == null)
+            {
+                position = new Position { Name = model.PositionName };
+                await this.dataManager.AddPositionAsync(position);
+            }
+
+            bool result = await this.dataManager.UpdatePersonAsync(model.GetDomain(organization.Id, position.Id));
 
             if (result)
-            {
-                return RedirectToAction("Index");
-            }
+                return Json(new { redirectUrl = Url.Action("Index") });
             else
-            {
-                return StatusCode(500);
-            }
+                return Json(new { error = "Не удалось обновить контакт" });
         }
 
         [HttpGet("/search")]
