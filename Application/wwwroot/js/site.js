@@ -1,5 +1,4 @@
 ﻿$(document).ready(function () {
-    $('#contacts').empty();
     $(window).resize(setPopupContainerPosition);
     $(window).scroll(setPopupContainerPosition);
     setPopupContainerPosition();    
@@ -8,6 +7,7 @@
 $('#open-new-person-block-link').on('click', function (e) {
     e.preventDefault();
     e.stopPropagation();
+    clearPopup();
     showPopup();
 });
 
@@ -31,19 +31,18 @@ $('.open-edit-person-form-link').click(function () {
         data: object,
         success: function (result) {
             if (result.obj) {
-                popupWnd = $('new-person-block');
-                popupWnd.find('#first-name').val(result.FirstName);
-                popupWnd.find('#last-name').val(result.LastName);
-                popupWnd.find('#middle-name').val(result.MiddleName);
-                popupWnd.find('#date-of-birth').val(result.DateOfBirth);
-                popupWnd.find('#org-name').val(result.OrganizationName);
-                popupWnd.find('#pos-name').val(result.PositionName);
-
-                for (i in result.Contacts) {
-                    popupWnd.find('#contacts').append(getContactHtml(result.Contacts[i].Type, result.Contacts[i].Value));
-                }
-
+                clearPopup();
                 showPopup();
+                $('#first-name').val(result.obj.firstName);
+                $('#last-name').val(result.obj.lastName);
+                $('#middle-name').val(result.obj.middleName);
+                $('#date-of-birth').val(getHtml5StringDate(result.obj.dateOfBirth));
+                $('#org-name').val(result.obj.organizationName);
+                $('#pos-name').val(result.obj.positionName);
+
+                result.obj.contacts.forEach(function (item, i, arr) {
+                    $('#contacts').append(getContactHtml(item.type, item.value));
+                });
             }
             else if (result.error) {
                 alert(result.error);
@@ -250,4 +249,22 @@ function showPopup() {
     $('#black-background').show();
     $('html,body').css('overflow', 'hidden');
     $('html').scrollTop(scrollPos);
+}
+
+function clearPopup() {
+    $('#first-name').val('');
+    $('#last-name').val('');
+    $('#middle-name').val('');
+    $('#date-of-birth').val('');
+    $('#org-name').val('');
+    $('#pos-name').val('');
+    $('#contacts').empty();
+} 
+
+function getHtml5StringDate(commonDateStr) {
+    date = new Date(commonDateStr);
+    day = ("0" + date.getDate()).slice(-2);
+    month = ("0" + (date.getMonth() + 1)).slice(-2);
+    result = date.getFullYear() + "-" + month + "-" + day;
+    return result;
 }
