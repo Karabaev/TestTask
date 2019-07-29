@@ -20,8 +20,9 @@ $('#close-popup-btn').click(function () {
 });
 
 $('.open-edit-person-form-link').click(function () {
+    Id = $(this).attr('value');
     object = {
-        Id: $(this).attr('value')
+        Id: Id
     };
     $.ajax({
         url: '/get-person',
@@ -39,9 +40,36 @@ $('.open-edit-person-form-link').click(function () {
                 $('#date-of-birth').val(getHtml5StringDate(result.obj.dateOfBirth));
                 $('#org-name').val(result.obj.organizationName);
                 $('#pos-name').val(result.obj.positionName);
-
                 result.obj.contacts.forEach(function (item, i, arr) {
                     $('#contacts').append(getContactHtml(item.type, item.value));
+                });
+                submitBtn = $('#submit-btn-new-person-form');
+                submitBtn.html('Изменить контакт');
+                submitBtn.off();
+                submitBtn.on('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    object = getNewPersonInfoToSubmit();
+                    object.Id = Id;
+                    json = JSON.stringify(object);
+                    $.ajax({
+                        url: '/update-person',
+                        type: 'patch',
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        data: json,
+                        success: function (result) {
+                            if (result.redirectUrl) {
+                                window.location.href = result.redirectUrl;
+                            }
+                            else if (result.error) {
+                                alert(result.error);
+                            }
+                        },
+                        error: function (jqxhr, status, errorMsg) {
+                            console.error(status + " | " + errorMsg + " | " + jqxhr);
+                        }
+                    });
                 });
             }
             else if (result.error) {
@@ -54,41 +82,6 @@ $('.open-edit-person-form-link').click(function () {
     });
 });
 
-//function openEditForm(personGuid) {
-//    json = JSON.stringify({
-//        Id: personGuid
-//    });
-//    $.ajax({
-//        url: '/get-person',
-//        type: 'patch',
-//        contentType: 'application/json',
-//        dataType: 'json',
-//        data: json,
-//        success: function (result) {
-//            if (result) {
-//                popupWnd.find('#first-name').val(result.FirstName);
-//                popupWnd.find('#last-name').val(result.LastName);
-//                popupWnd.find('#middle-name').val(result.MiddleName);
-//                popupWnd.find('#date-of-birth').val(result.DateOfBirth);
-//                popupWnd.find('#org-name').val(result.OrganizationName);
-//                popupWnd.find('#pos-name').val(result.PositionName);
-                
-//                for (i in result.Contacts) {
-//                    popupWnd.find('#contacts').append(getContactHtml(result.Contacts[i].Type, result.Contacts[i].Value));
-//                }
-
-//            }
-//            else if (result.error) {
-//                alert(result.error);
-//            }
-//        },
-//        error: function (jqxhr, status, errorMsg) {
-//            console.error(status + " | " + errorMsg + " | " + jqxhr);
-//        }
-//    });
-//    showPopup();
-//}
-
 // добавить новую строку контактных данных
 $('#contact-types').on('change', function (e) {
     e.preventDefault();
@@ -100,14 +93,18 @@ $('#contact-types').on('change', function (e) {
 $('#submit-btn-new-person-form').on('click', function (e) {
     e.preventDefault();
     e.stopPropagation();
-    json = JSON.stringify(GetNewPersonInfoToSubmit());
+    sendCreatePersonRequest();
+});
+
+function sendCreatePersonRequest() {
+    json = JSON.stringify(getNewPersonInfoToSubmit());
     $.ajax({
         url: '/create',
         type: 'post',
         contentType: 'application/json',
         dataType: 'json',
         data: json,
-        success: function (result){
+        success: function (result) {
             if (result.redirectUrl) {
                 window.location.href = result.redirectUrl;
             }
@@ -119,7 +116,7 @@ $('#submit-btn-new-person-form').on('click', function (e) {
             console.error(status + " | " + errorMsg + " | " + jqxhr);
         }
     });
-});
+}
 
 $('.remove-person-link').on('click', function (e) {
     e.preventDefault();
@@ -184,7 +181,7 @@ function removeContactInfoFromBase(id) {
 }
 
 // собрать всю инфу для запроса создания новой записи
-function GetNewPersonInfoToSubmit() {
+function getNewPersonInfoToSubmit() {
     var result = serializeForm();
     result.Contacts = serializeContacts();
     return result;
@@ -259,8 +256,17 @@ function clearPopup() {
     $('#org-name').val('');
     $('#pos-name').val('');
     $('#contacts').empty();
+    submitBtn = $('#submit-btn-new-person-form');
+    submitBtn.off();
+    submitBtn.html('Создать контакт');
+    submitBtn.on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        sendCreatePersonRequest();
+    });
 } 
 
+// костыль, чтобы инициализировать дейтпикер на вьюшке
 function getHtml5StringDate(commonDateStr) {
     date = new Date(commonDateStr);
     day = ("0" + date.getDate()).slice(-2);

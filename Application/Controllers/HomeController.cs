@@ -58,18 +58,6 @@ namespace Application.Controllers
             return Json(new { obj = viewModel });
         }
 
-        //[HttpGet("/get-person")]
-        //public IActionResult GetPerson(string Id)
-        //{
-        //    Person person = this.dataManager.GetPerson(Guid.Parse(Id));
-
-        //    if (person == null)
-        //        return Json(new { error = "Контакт не найден" });
-
-        //    UpdatePersonViewModel viewModel = new UpdatePersonViewModel(person);
-        //    return Json(new { obj = viewModel });
-        //}
-
         [HttpPost("/create")]
         public async Task<IActionResult> CreatePersonAsync([FromBody]CreatePersonViewModel model)
         {
@@ -98,8 +86,6 @@ namespace Application.Controllers
             if (result)
             {
                 return Ok(new { redirectUrl = Url.Action("Index") });
-                //return Json(new { redirectUrl = Url.Action("Index") });
-                //return RedirectToAction("Index");
             }
             else
             {
@@ -135,7 +121,7 @@ namespace Application.Controllers
                 return Json(new { error = "Не удалось удалить запись" });
         }
         [HttpPatch("/update-person")]
-        public async Task<IActionResult> UpdatePersonAsync(UpdatePersonViewModel model)
+        public async Task<IActionResult> UpdatePersonAsync([FromBody]UpdatePersonViewModel model)
         {
             if (!ModelState.IsValid)
                 return Json(new { error = "На форме есть некорректные данные" });
@@ -159,7 +145,7 @@ namespace Application.Controllers
             bool result = await this.dataManager.UpdatePersonAsync(model.GetDomain(organization.Id, position.Id));
 
             if (result)
-                return Json(new { redirectUrl = Url.Action("Index") });
+                return Ok(new { redirectUrl = Url.Action("Index") });
             else
                 return Json(new { error = "Не удалось обновить контакт" });
         }

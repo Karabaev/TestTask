@@ -7,26 +7,27 @@
     <div class="row">
         @foreach (var item in Model)
         {
-            <div class="col-md-2 person-card">
-                <div><bold>@item.FullName</bold></div>
-                <div>Дата рождения: @item.DateOfBirth.ToString("dd.MM.yyyy")</div>
-                <div>Организация: @item.Organization.Name</div>
-                <div>Должность: @item.Position.Name</div>
-                <div>
-                    Контактная информация: <br />
-                    <ul>
-                        @foreach (var contactInfo in item.Contacts)
-                        {
-                            <li>
-                                @string.Format("{0}: {1}", contactInfo.Type, contactInfo.Value)
-                                <a href="#" onclick="removeContactInfoRow(this); removeContactInfoFromBase('@contactInfo.Id');">X</a>
-                            </li>
-                        }
-                    </ul>
-                </div>
-                <a href="#" class="open-edit-person-form-link" value="@item.Id">Редактировать</a><br />
-                <a href="#" class="remove-person-link" value="@item.Id">Удалить</a>
+        <div class="col-md-3 person-card">
+            <div><b>@item.FullName</b></div>
+            <hr align="left" width="100%" size="2" color="Black"/>
+            <div>Дата рождения: @item.DateOfBirth.ToString("dd.MM.yyyy")</div>
+            <div>Организация: @item.Organization.Name</div>
+            <div>Должность: @item.Position.Name</div>
+            <div>
+                Контактная информация: <br />
+                <ul>
+                    @foreach (var contactInfo in item.Contacts)
+                    {
+                        <li>
+                            @string.Format("{0}: {1}", contactInfo.Type, contactInfo.Value)
+                            <a href="#" onclick="removeContactInfoRow(this); removeContactInfoFromBase('@contactInfo.Id');">X</a>
+                        </li>
+                    }
+                </ul>
             </div>
+            <a href="#" class="open-edit-person-form-link" value="@item.Id">Редактировать</a><br />
+            <a href="#" class="remove-person-link" value="@item.Id">Удалить</a>
+        </div>
         }
     </div>
 </div>
