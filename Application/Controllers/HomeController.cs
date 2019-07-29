@@ -143,7 +143,7 @@ namespace Application.Controllers
             }
 
             bool result = await this.dataManager.UpdatePersonAsync(model.GetDomain(organization.Id, position.Id));
-
+           
             if (result)
                 return Ok(new { redirectUrl = Url.Action("Index") });
             else

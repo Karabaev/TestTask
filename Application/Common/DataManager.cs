@@ -46,11 +46,14 @@
             if (person == null)
                 return false;
 
-            foreach (var item in person.GetType().GetProperties())
-            {
-                item.SetValue(person, item.GetValue(entity));
-            }
-
+            person.FirstName = entity.FirstName;
+            person.LastName = entity.LastName;
+            person.MiddleName = entity.MiddleName;
+            person.DateOfBirth = entity.DateOfBirth;
+            person.OrganizationId = entity.OrganizationId;
+            person.PositionId = entity.PositionId;
+            this.context.ContactInfos.RemoveRange(person.Contacts);
+            person.Contacts = new List<ContactInfo>(entity.Contacts);
             return await this.context.SaveChangesAsync() > 0;
         }
 
