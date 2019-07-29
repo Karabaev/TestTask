@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<Application.Models.IndexPersonViewModel>
-@{ 
+@{
     Layout = "_Layout";
 }
 <div>
     <h2>Контакты</h2>
 
-    @foreach(var item in Model)
+    @foreach (var item in Model)
     {
         <p>
             <div><bold>@item.FullName</bold></div>
@@ -13,19 +13,18 @@
             <div>Организация: @item.Organization.Name</div>
             <div>Должность: @item.Position.Name</div>
             <div>
-                Контактная информация: <br/>
+                Контактная информация: <br />
                 <ul>
                     @foreach (var contactInfo in item.Contacts)
                     {
                         <li>
-                             @string.Format("{0}, {1}", contactInfo.Type, contactInfo.Value)
+                            @string.Format("{0}: {1}", contactInfo.Type, contactInfo.Value)
                         </li>
                     }
                 </ul>
             </div>
-            
-            
+            <a href="#" id="open-edit-person-form-link">Редактировать</a>
+            <a href="#" class="remove-person-link" value="@item.Id">Удалить</a>
         </p>
     }
-
 </div>

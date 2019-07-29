@@ -54,6 +54,20 @@
             return await this.context.SaveChangesAsync() > 0;
         }
 
+        public async Task<bool> RemovePersonAsync(Guid id)
+        {
+            if (id == Guid.Empty)
+                throw new ArgumentOutOfRangeException(nameof(id));
+
+            Person person = this.GetPerson(id);
+
+            if (person == null)
+                return false;
+
+            this.context.People.Remove(person);
+            return await this.context.SaveChangesAsync() > 0;
+        }
+
         public async Task<bool> AddOrganizationAsync(Organization entity)
         {
             if (entity == null)

@@ -69,6 +69,20 @@
             }
         }
 
+        [HttpDelete("/Remove")]
+        public async Task<IActionResult> RemovePerson([FromBody]RemovePersonViewModel model)
+        {
+            if(!ModelState.IsValid)
+                return Json(new { error = "Не указан идентификатор записи" });
+
+            bool result = await dataManager.RemovePersonAsync(model.Id.Value);
+
+            if (result)
+                return Json(new { redirectUrl = Url.Action("Index") });
+            else
+                return Json(new { error = "Не удалось удалить запись" });
+        }
+
         public async Task<IActionResult> UpdatePersonAsync(UpdatePersonViewModel model)
         {
             if (!ModelState.IsValid)

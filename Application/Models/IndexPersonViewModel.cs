@@ -8,6 +8,7 @@
     {
         public IndexPersonViewModel(Person person)
         {
+            this.Id = person.Id;
             this.FullName = string.Join(' ', person.LastName, person.FirstName, person.MiddleName);
             this.DateOfBirth = person.DateOfBirth;
             this.Organization = new OrganizationViewModel(person.Organization);
@@ -21,6 +22,7 @@
 
         }
 
+        public Guid Id { get; set; }
         public string FullName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public ICollection<IndexContactInfoViewModel> Contacts { get; set; }

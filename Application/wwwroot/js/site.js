@@ -55,6 +55,34 @@ $('#submit-btn-new-person-form').on('click', function (e) {
     });
 });
 
+$('.remove-person-link').on('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    json = JSON.stringify({
+        id: $(this).attr('value')
+    });
+
+    $.ajax({
+        url: '/Remove',
+        type: 'delete',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: json,
+        success: function (result) {
+            if (result.redirectUrl) {
+                alert("Запись удалена успешно");
+                window.location.href = result.redirectUrl;
+            }
+            else if (result.error) {
+                alert(error);
+            }
+        },
+        error: function (jqxhr, status, errorMsg) {
+            console.error(status + " | " + errorMsg + " | " + jqxhr);
+        }
+    });
+});
+
 // получить верстку для элемента листа контактных данных
 function getContactHtml(type) {
     return '<li><span class="contact-type">' + type + '</span>:<input type="text" class="contact-value"></input></li>';
