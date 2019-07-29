@@ -86,6 +86,20 @@
             return await this.context.SaveChangesAsync() > 0;
         }
 
+        public async Task<bool> RemoveContactInfoAsync(Guid id)
+        {
+            if (id == Guid.Empty)
+                throw new ArgumentOutOfRangeException(nameof(id));
+
+            ContactInfo info = this.context.ContactInfos.FirstOrDefault(ci => ci.Id == id);
+
+            if (info == null)
+                return false;
+
+            this.context.ContactInfos.Remove(info);
+            return await this.context.SaveChangesAsync() > 0;
+        }
+
         public Organization FindOrganizationByName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))

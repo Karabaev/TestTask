@@ -36,7 +36,7 @@ $('#submit-btn-new-person-form').on('click', function (e) {
     e.stopPropagation();
     json = JSON.stringify(GetNewPersonInfoToSubmit());
     $.ajax({
-        url: '/Create',
+        url: '/create',
         type: 'post',
         contentType: 'application/json',
         dataType: 'json',
@@ -85,7 +85,36 @@ $('.remove-person-link').on('click', function (e) {
 
 // получить верстку для элемента листа контактных данных
 function getContactHtml(type) {
-    return '<li><span class="contact-type">' + type + '</span>:<input type="text" class="contact-value"></input></li>';
+    return '<li><span class="contact-type">' + type
+        + '</span>:<input type="text" class="contact-value"></input><button onclick="removeContactInfoRow(this)">X</button></li>';
+}
+
+// удалить строку контактных данных из DOM
+function removeContactInfoRow(e) {
+    $(e).parent().remove();
+}
+
+function removeContactInfoFromBase(id) {
+    json = JSON.stringify({
+        Id: id
+    });
+
+    $.ajax({
+        url: '/remove-contact-info',
+        type: 'delete',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: json,
+        success: function (result) {
+            if (result.error) {
+                alert(result.error);
+                location.reload();
+            }
+        },
+        error: function (jqxhr, status, errorMsg) {
+            console.error(status + " | " + errorMsg + " | " + jqxhr);
+        }
+    });
 }
 
 // собрать всю инфу для запроса создания новой записи

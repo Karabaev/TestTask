@@ -60,3 +60,8 @@
     background: #ffe; 
     border: 1px solid #333;
 }
+
+.person-card {
+    border: 2px solid;
+    margin: 2px;
+}

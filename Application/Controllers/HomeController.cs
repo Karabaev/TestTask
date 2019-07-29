@@ -32,7 +32,7 @@
             return View(models);
         }
 
-        [HttpPost("/Create")]
+        [HttpPost("/create")]
         public async Task<IActionResult> CreatePersonAsync([FromBody]CreatePersonViewModel model)
         {
             if (!ModelState.IsValid)
@@ -69,7 +69,7 @@
             }
         }
 
-        [HttpDelete("/Remove")]
+        [HttpDelete("/remove")]
         public async Task<IActionResult> RemovePerson([FromBody]RemovePersonViewModel model)
         {
             if(!ModelState.IsValid)
@@ -79,6 +79,20 @@
 
             if (result)
                 return Json(new { redirectUrl = Url.Action("Index") });
+            else
+                return Json(new { error = "Не удалось удалить запись" });
+        }
+
+        [HttpDelete("/remove-contact-info")]
+        public async Task<IActionResult> RemoveContactInfo([FromBody]RemoveContactInfoViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { error = "Не указан идентификатор записи" });
+
+            bool result = await this.dataManager.RemoveContactInfoAsync(model.Id.Value);
+
+            if (result)
+                return Ok();
             else
                 return Json(new { error = "Не удалось удалить запись" });
         }

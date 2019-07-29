@@ -7,7 +7,7 @@
 
     @foreach (var item in Model)
     {
-        <p>
+        <div class="person-card">
             <div><bold>@item.FullName</bold></div>
             <div>Дата рождения: @item.DateOfBirth.ToString("dd.MM.yyyy")</div>
             <div>Организация: @item.Organization.Name</div>
@@ -19,12 +19,13 @@
                     {
                         <li>
                             @string.Format("{0}: {1}", contactInfo.Type, contactInfo.Value)
+                            <a href="#" onclick="removeContactInfoRow(this); removeContactInfoFromBase('@contactInfo.Id');">X</a>
                         </li>
                     }
                 </ul>
             </div>
-            <a href="#" id="open-edit-person-form-link">Редактировать</a>
+            <a href="#" class="open-edit-person-form-link">Редактировать</a><br/>
             <a href="#" class="remove-person-link" value="@item.Id">Удалить</a>
-        </p>
+        </div>
     }
 </div>
