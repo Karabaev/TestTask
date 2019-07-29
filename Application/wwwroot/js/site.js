@@ -46,7 +46,7 @@ $('#submit-btn-new-person-form').on('click', function (e) {
                 window.location.href = result.redirectUrl;
             }
             else if (result.error) {
-                alert(error);
+                alert(result.error);
             }
         },
         error: function (jqxhr, status, errorMsg) {
@@ -143,6 +143,10 @@ function serializeContacts() {
     listItems.forEach(function (item, i, arr) {
         type = item.firstChild.textContent;
         value = item.lastChild.value;
+
+        type = $(item).find('.contact-type').text();
+        value = $(item).find('.contact-value').val();
+
         struct = {
             Type: type,
             Value: value

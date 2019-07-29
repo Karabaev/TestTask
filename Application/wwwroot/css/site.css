@@ -61,7 +61,14 @@
     border: 1px solid #333;
 }
 
+.person-card-list {
+    padding-top: 120px;
+    padding-left: 10px;
+}
+
 .person-card {
     border: 2px solid;
     margin: 2px;
 }
+
+
