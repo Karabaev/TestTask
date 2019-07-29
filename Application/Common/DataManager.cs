@@ -100,6 +100,67 @@
             return await this.context.SaveChangesAsync() > 0;
         }
 
+        public IEnumerable<Person> FindPersonByName(string searchStr)
+        {
+            if (string.IsNullOrWhiteSpace(searchStr))
+                throw new ArgumentNullException(nameof(searchStr));
+
+            string searchStrToLower = searchStr.ToLower();
+            List<Person> result = this.context.People.Where(p => p.FirstName.ToLower().Contains(searchStrToLower)).ToList();
+            result.AddRange(this.context.People.Where(p => p.LastName.ToLower().Contains(searchStrToLower)).ToList());
+            result.AddRange(this.context.People.Where(p => p.MiddleName.ToLower().Contains(searchStrToLower)).ToList());
+
+            return result;
+        }
+
+        public IEnumerable<Person> FindPersonByOrganization(string searchStr)
+        {
+            if (string.IsNullOrWhiteSpace(searchStr))
+                throw new ArgumentNullException(nameof(searchStr));
+
+            string searchStrToLower = searchStr.ToLower();
+
+            Organization organization = this.context.Organizations.FirstOrDefault(o => o.Name.ToLower() == searchStrToLower);
+
+            if (organization == null)
+                return new List<Person>();
+
+            List<Person> result = this.context.People.Where(p => p.OrganizationId == organization.Id).ToList();
+            return result;
+        }
+
+        public IEnumerable<Person> FindPersonByPosition(string searchStr)
+        {
+            if (string.IsNullOrWhiteSpace(searchStr))
+                throw new ArgumentNullException(nameof(searchStr));
+
+            string searchStrToLower = searchStr.ToLower();
+
+            Position position = this.context.Positions.FirstOrDefault(o => o.Name.ToLower() == searchStrToLower);
+
+            if (position == null)
+                return new List<Person>();
+
+            List<Person> result = this.context.People.Where(p => p.PositionId == position.Id).ToList();
+            return result;
+        }
+
+        public IEnumerable<Person> FindPersonByContactInfo(string searchStr)
+        {
+            if (string.IsNullOrWhiteSpace(searchStr))
+                throw new ArgumentNullException(nameof(searchStr));
+
+            string searchStrToLower = searchStr.ToLower();
+
+            var infos = this.context.ContactInfos.Where(o => o.Value.ToLower() == searchStrToLower);
+
+            if (infos == null || !infos.Any())
+                return new List<Person>();
+
+            List<Person> result = new List<Person>(infos.Select(i => i.Person));
+            return result;
+        }
+
         public Organization FindOrganizationByName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))

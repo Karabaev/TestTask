@@ -47,8 +47,13 @@
                 </div>
             </div>
             <div class="col-md-8">
-                <form id="search-form">
-                    <input type="search" placeholder="Значение любого поля" />
+                Искать по
+                <form id="search-form" action="search" method="get">
+                    <input type="radio" name="SearchType" value="Name"> ФИО
+                    <input type="radio" name="SearchType" value="Organization" checked> организации
+                    <input type="radio" name="SearchType" value="Position"> должности
+                    <input type="radio" name="SearchType" value="ContactInfo"> контактным данным
+                    <input type="search" name="SearchString" placeholder="Значение" />
                 </form>
             </div>
         </div>

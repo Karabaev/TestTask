@@ -1,4 +1,15 @@
-﻿namespace Application.Controllers
+﻿namespace Application
+{
+    public enum SearchTypes
+    {
+        Name,
+        Organization,
+        Position,
+        ContactInfo
+    }
+}
+
+namespace Application.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -113,6 +124,42 @@
             {
                 return StatusCode(500);
             }
+        }
+
+        [HttpGet("/search")]
+        public IActionResult SearchPerson(SearchPersonViewModel model)
+        {
+            if(!ModelState.IsValid)
+                return Json(new { error = "Не введена строка поиска" });
+
+            ICollection<IndexPersonViewModel> viewModels = new List<IndexPersonViewModel>();
+            IEnumerable<Person> models = null;
+
+            switch (model.SearchType)
+            {
+                case SearchTypes.Name:
+                    models = this.dataManager.FindPersonByName(model.SearchString);
+                    break;
+                case SearchTypes.Organization:
+                    models = this.dataManager.FindPersonByOrganization(model.SearchString);
+                    break;
+                case SearchTypes.Position:
+                    models = this.dataManager.FindPersonByPosition(model.SearchString);
+                    break;
+                case SearchTypes.ContactInfo:
+                    models = this.dataManager.FindPersonByContactInfo(model.SearchString);
+                    break;
+                default:
+                    break;
+            }
+
+            foreach (var item in models)
+            {
+                viewModels.Add(new IndexPersonViewModel(item));
+            }
+
+            ViewBag.Title = "Результаты поиска";
+            return View("Index", viewModels);
         }
 
         private readonly DataManager dataManager;
