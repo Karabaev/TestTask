@@ -7,27 +7,49 @@
     <div class="row">
         @foreach (var item in Model)
         {
-        <div class="col-md-3 person-card">
-            <div><b>@item.FullName</b></div>
-            <hr align="left" width="100%" size="2" color="Black"/>
-            <div>Дата рождения: @item.DateOfBirth.ToString("dd.MM.yyyy")</div>
-            <div>Организация: @item.Organization.Name</div>
-            <div>Должность: @item.Position.Name</div>
-            <div>
-                Контактная информация: <br />
-                <ul>
-                    @foreach (var contactInfo in item.Contacts)
-                    {
-                        <li>
-                            @string.Format("{0}: {1}", contactInfo.Type, contactInfo.Value)
-                            <a href="#" onclick="removeContactInfoRow(this); removeContactInfoFromBase('@contactInfo.Id');">X</a>
-                        </li>
-                    }
-                </ul>
+            <div class="col-md-3 person-card">
+                <div><b>@item.FullName</b></div>
+                <hr align="left" width="100%" size="2" color="Black" />
+                <div>Дата рождения: @item.DateOfBirth.ToString("dd.MM.yyyy")</div>
+                <div>Организация: @item.Organization.Name</div>
+                <div>Должность: @item.Position.Name</div>
+                <div>
+                    Контактная информация: <br />
+                    <ul>
+                        @foreach (var contactInfo in item.Contacts)
+                        {
+                            <li>
+                                @{
+                                    string visibleType = string.Empty;
+
+                                    switch (contactInfo.Type)
+                                    {
+                                        case "Telephone":
+                                            visibleType = "Телефон";
+                                            break;
+                                        case "Skype":
+                                            visibleType = contactInfo.Type;
+                                            break;
+                                        case "Email":
+                                            visibleType = contactInfo.Type;
+                                            break;
+                                        case "Other":
+                                            visibleType = "Другое";
+                                            break;
+                                        default:
+                                            visibleType = "Другое";
+                                            break;
+                                    }
+                                }
+                                @string.Format("{0}: {1}", visibleType, contactInfo.Value)
+                                <a href="#" onclick="removeContactInfoRow(this); removeContactInfoFromBase('@contactInfo.Id');">X</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <a href="#" class="open-edit-person-form-link" value="@item.Id">Редактировать</a><br />
+                <a href="#" class="remove-person-link" value="@item.Id">Удалить</a>
             </div>
-            <a href="#" class="open-edit-person-form-link" value="@item.Id">Редактировать</a><br />
-            <a href="#" class="remove-person-link" value="@item.Id">Удалить</a>
-        </div>
         }
     </div>
 </div>

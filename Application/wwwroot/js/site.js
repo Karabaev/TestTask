@@ -148,7 +148,27 @@ $('.remove-person-link').on('click', function (e) {
 
 // получить верстку для элемента листа контактных данных
 function getContactHtml(type, value) {
-    return '<li><span class="contact-type">' + type
+    visibleType = '';
+
+    switch (type) {
+        case 'Telephone':
+            visibleType = 'Телефон';
+            break;
+        case 'Skype':
+            visibleType = type;
+            break;
+        case 'Email':
+            visibleType = type;
+            break;
+        case 'Other':
+            visibleType = "Другое";
+            break;
+        default:
+            visibleType = "Другое";
+            break;
+    }
+
+    return '<li><span class="contact-type" value="' + type + '">' + visibleType
         + '</span>:<input type="text" class="contact-value" value="'+ value +'"></input><button onclick="removeContactInfoRow(this)">X</button></li>';
 }
 
@@ -157,6 +177,7 @@ function removeContactInfoRow(e) {
     $(e).parent().remove();
 }
 
+// удалить строку контактных данных из Базы
 function removeContactInfoFromBase(id) {
     json = JSON.stringify({
         Id: id
@@ -199,17 +220,13 @@ function serializeForm() {
     return indexed_array;
 }
 
-// создать массив контактные данные 
+// создать массив контактных данных
 function serializeContacts() {
     result = [];
     listItems = $('#contacts li').get();
     listItems.forEach(function (item, i, arr) {
-        type = item.firstChild.textContent;
-        value = item.lastChild.value;
-
-        type = $(item).find('.contact-type').text();
+        type = $(item).find('.contact-type').attr('value');
         value = $(item).find('.contact-value').val();
-
         struct = {
             Type: type,
             Value: value
@@ -240,6 +257,7 @@ function closePopup() {
     $('html').scrollTop(scrollPos);
 }
 
+// показать попап
 function showPopup() {
     scrollPos = $(window).scrollTop();
     $('#new-person-block').show();
@@ -248,6 +266,7 @@ function showPopup() {
     $('html').scrollTop(scrollPos);
 }
 
+// вернуть попап в исходное состояние
 function clearPopup() {
     $('#first-name').val('');
     $('#last-name').val('');
